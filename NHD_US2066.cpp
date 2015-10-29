@@ -65,10 +65,10 @@ void send_packet(unsigned char x)
 
 void init_oled()
 {
-  pinMode(ASCL, OUTPUT);      //set Arduino I2C lines as outputs
-  pinMode(ASDA, OUTPUT);      //
-  digitalWrite(ASCL, LOW);    //
-  digitalWrite(ASDA, LOW);    //
+  //pinMode(ASCL, OUTPUT);      //set Arduino I2C lines as outputs
+//  pinMode(ASDA, OUTPUT);      //
+//  digitalWrite(ASCL, LOW);    //
+//  digitalWrite(ASDA, LOW);    //
 
   digitalWrite(RES, HIGH);
   delay(10);
