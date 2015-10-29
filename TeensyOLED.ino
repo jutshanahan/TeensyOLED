@@ -1,20 +1,8 @@
 //---------------------------------------------------------
 /*
 
-NHD_0420CW_AX3.ino
-
-Program for writing to Newhaven Display Slim OLEDs based on US2066 controller.
-
-Pick one up today in the Newhaven Display shop!
-------> http://www.newhavendisplay.com/oled-slim-character-oleds-c-119_825.html
-
-This code is written for the Arduino Mega.
-
-Copyright (c) 2015 - Newhaven Display International, Inc.
-
-Newhaven Display invests time and resources providing this open source code,
-please support Newhaven Display by purchasing products from Newhaven Display!
-
+Example code for NewHaven NHD-0420CW OLED character display using US2066 controller and I2C connection.
+http://www.newhavendisplay.com/oled-slim-character-oleds-c-119_825.html
 */
 //---------------------------------------------------------
 
@@ -49,22 +37,18 @@ void loop()
     a3=touchRead(A3);
     d0=touchRead(0);
     d1=touchRead(1);
+    
+    //a1=a2=a3=d0=d1=1234;
   
     
-    sprintf(line1,"d0=%d  d1=%d",d0,d1);
-    oled_text(line1,1);
-    sprintf(line1,"A1=%d",a1);
-    oled_text(line1,2);
-    sprintf(line1,"A2=%d",a2);
-    oled_text(line1,3);
-    sprintf(line1,"A3=%d",a3);
-    oled_text(line1,4);
+
+    sprintf(line1,"d0=%d  d1=%d",d0,d1);  oled_text(line1,0);
+    sprintf(line1,"A1=%d",a1);        oled_text(line1,1);
+    sprintf(line1,"A2=%d",a2);        oled_text(line1,2);
+    sprintf(line1,"A3=%d",a3);        oled_text(line1,3);
+
     
-    /*
-    oled_text("mah fuckas",2);
-    oled_text("jroc all up in this mah",3);
-    oled_text("12345abcde12345vwxyz",4);
-    */
+ 
     Serial.println("main");
     delay(100);
 

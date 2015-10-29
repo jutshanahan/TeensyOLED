@@ -5,6 +5,10 @@ const char slave2w = 0x3C;  //3C or 78
 unsigned char mode = 1; // 0 = 8-bit parallel 6800 mode; 1 = i2c mode; 2 = SPI mode;
 unsigned char tx_packet[]={0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 
+#define OLED_Address 0x3c
+#define OLED_Command_Mode 0x80
+#define OLED_Data_Mode 0x40
+
 void command(unsigned char c)
 {
   tx_packet[0] = 0x00;
@@ -20,34 +24,54 @@ void data(unsigned char d)
 
 }
 
-void oled_text(String string, char row)
+
+void sendCommand(unsigned char command)
+{
+    Wire.beginTransmission(OLED_Address); 	 // **** Start I2C 
+    Wire.write(OLED_Command_Mode);     		 // **** Set OLED Command mode
+    Wire.write(command);
+    Wire.endTransmission();                 	 // **** End I2C 
+      delay(10);
+}
+
+void cursPos(uint8_t col, uint8_t row)
+{
+  //int row_offsets[] = { 0x00, 0x20, 0x40, 0x60 };
+  //sendCommand(0x80 | (col + row_offsets[row]));
+  //command(0x80 + (col + row_offsets[row]));
+  command(0x80 | row*0x20);
+}
+
+
+
+
+void oled_text(String string, unsigned char row)
 {
   char i, strlen;
+  //cursPos(0,row);
   
-  switch (row){
-    case 1:
-      command(0x01);
-      break;
-    case 2:
-      command(0xA0);
-      break;
-    case 3:
-      command(0xC0);
-      break;
-    case 4:
-      command(0xE0);
-      break;
+  if (row >=0 && row < 4)
+  {
+     command(0x80 | row*0x20 );
   }
-      
-
+  else
+  {
+     Serial.println("Error in oled_text(): row out of range");
+     return;
+  }
+  
   strlen = string.length();
   if (strlen >20) { strlen=20; }
-  
   
   delay(2);
   for(i=0;i<strlen;i++){
     data(string[i]);
   }
+  
+  for(i=strlen;i<20;i++){    // pad with blank characters
+    data(' ');
+  }
+  
   //delay(2);
 }
 
@@ -74,7 +98,7 @@ void init_oled()
   delay(10);
   Wire.begin();
   delay(10);
-    //SPI.begin();
+
     command(0x2A);  //function set (extended command set)
 	command(0x71);  //function selection A, disable internal Vdd regualtor
 	data(0x00);

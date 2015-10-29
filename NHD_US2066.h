@@ -19,4 +19,4 @@ void init_oled();
 void send_packet(unsigned char x);
 void data(unsigned char d);
 void command(unsigned char c);
-void oled_text(String string, char row);
+void oled_text(String string, unsigned char row);
